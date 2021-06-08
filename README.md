@@ -19,7 +19,7 @@ devtools::install_github("missValTeam/Iscores")
 
 
 ```r
-n <- 100
+n <- 20
 X <- cbind(rnorm(n),rnorm(n))
 X.NA <- X
 X.NA[,1] <- ifelse(runif(n)<=0.2, NA, X[,1])
