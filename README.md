@@ -3,7 +3,7 @@
 
 ## Overview
 
-HPLB is a package intended to provide a framework for scoring imputations methods.
+Iscores is a package intended to provide a framework for scoring imputations methods. It implements the scores described in [Michel, Naef, Spohn and Meinshausen. 2021](https://arxiv.org/abs/2106.03742) . Examples of use of the library are shown below.
 
 
 ## Installation
