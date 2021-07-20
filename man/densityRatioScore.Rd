@@ -23,6 +23,8 @@ densityRatioScore(
 
 \item{Xhat}{a  matrix of imputations having same size as X}
 
+\item{x}{pattern of missing values}
+
 \item{X.true}{the actual true data if available}
 
 \item{num.proj}{an integer specifying the number of projections to consider for the score.}
@@ -38,8 +40,6 @@ densityRatioScore(
 \item{compute.glm}{a boolean}
 
 \item{...}{additional parameters}
-
-\item{a}{pattern of missing values}
 }
 \description{
 Computation of the density ratio score

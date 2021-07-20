@@ -1,15 +1,14 @@
 #' Combining projection forests
 #' @param mod1 first forest
 #' @param mod2 second forest
+#' @import stats
 combine2Forests <- function(mod1, mod2) {
-  # make several tests, to see if models fit together?
-  # (formula, num.independent.variables, mtry, min.node.size, splitrule, treetype, call?, importance.mode, num.samples, replace, ...)
 
-  res = mod1
+  res <- mod1
 
-  res$num.trees = res$num.trees + mod2$num.trees
-  res$inbag.counts = c(res$inbag.counts, mod2$inbag.counts)
-  res$forest$child.nodeIDs = c(res$forest$child.nodeIDs, mod2$forest$child.nodeIDs)
+  res$num.trees <- res$num.trees + mod2$num.trees
+  res$inbag.counts <- c(res$inbag.counts, mod2$inbag.counts)
+  res$forest$child.nodeIDs <- c(res$forest$child.nodeIDs, mod2$forest$child.nodeIDs)
 
   for (i in 1:mod1$num.trees) {
     res$forest$split.varIDs[[i]] <- res$var[res$forest$split.varIDs[[i]]+1]
@@ -20,19 +19,18 @@ combine2Forests <- function(mod1, mod2) {
     mod2$forest$split.varIDs[[i]][mod2$forest$child.nodeIDs[[i]][[1]]==0] <- 0
   }
 
-  res$forest$split.varIDs = c(res$forest$split.varIDs, mod2$forest$split.varIDs)
-  res$forest$split.values = c(res$forest$split.values, mod2$forest$split.values)
+  res$forest$split.varIDs <- c(res$forest$split.varIDs, mod2$forest$split.varIDs)
+  res$forest$split.values <- c(res$forest$split.values, mod2$forest$split.values)
   if (!is.null(res$forest$terminal.class.counts)) {
-    res$forest$terminal.class.counts = c(res$forest$terminal.class.counts, mod2$forest$terminal.class.counts)
-    #res$forest$terminal.class.counts = c(res$forest$terminal.class.counts, mod2$forest$terminal.class.counts)
+    res$forest$terminal.class.counts <- c(res$forest$terminal.class.counts, mod2$forest$terminal.class.counts)
   }
-  res$forest$num.trees = res$forest$num.trees + mod2$forest$num.trees
-  res$call$num.trees = res$num.trees
+  res$forest$num.trees <- res$forest$num.trees + mod2$forest$num.trees
+  res$call$num.trees <- res$num.trees
   res$num.independent.variables <- length(res$full.vars)
   res$forest$independent.variable.names <- res$full.vars
   res$forest$is.ordered <- rep(TRUE, length(res$full.vars))
   res$var <- 0:(length(res$full.vars)-1)
-  res
+  return(res)
 }
 
 #' Combining a list of forest
@@ -73,7 +71,7 @@ predict.crf <- function(object, Z, cutoff = NULL, return.regions = FALSE, alpha=
 
     nodes.Z <- lapply(1:length(object$list.rf), function(i){
 
-      z <- data.frame(X=na.omit(Z[,object$list.vars[[i]], drop=F]))
+      z <- data.frame(X=stats::na.omit(Z[,object$list.vars[[i]], drop=F]))
 
       if(nrow(z)==0){
         return(NA)
@@ -83,13 +81,11 @@ predict.crf <- function(object, Z, cutoff = NULL, return.regions = FALSE, alpha=
       }
     })
 
-    nodes.Z <- Reduce(nodes.Z, f = function(x,y) cbind(x,y))# nodes.Z  <- t(do.call(rbind,nodes.Z))#
+    nodes.Z <- Reduce(nodes.Z, f = function(x,y) cbind(x,y))
   }
 
   indicators <- sapply(1:ncol(nodes.Z), function(i) as.numeric(nodes.Z[,i] %in% object$confidence.nodes[[i]]))
 
-
-  #tau <- apply(indicators, 1, mean)
   if (is.null(object$weights)){
     object$weights<-rep(1/ncol(indicators), ncol(indicators))
 
@@ -115,15 +111,14 @@ predict.crf <- function(object, Z, cutoff = NULL, return.regions = FALSE, alpha=
 
 
 
-  return(list(#Zhat = Z[ids, ],
-    tau=tau, tauweighted=tauweighted))
+  return(list(tau=tau, tauweighted=tauweighted))
 }
 
 
 #' Computation of the density ratio score
 #' @param X a matrix of the observed data containing missing values
 #' @param Xhat a  matrix of imputations having same size as X
-#' @param a pattern of missing values
+#' @param x pattern of missing values
 #' @param X.true the actual true data if available
 #' @param num.proj an integer specifying the number of projections to consider for the score.
 #' @param num.trees.per.proj an integer, the number of trees per projection.
@@ -191,13 +186,13 @@ densityRatioScore <- function(X, # full data with missing values
         }
         vars.na <- sort(vars.na, decreasing = F)
 
-        vars <- vars.na #ids.x.na
+        vars <- vars.na
         if(length(ids.x.na)==ncol(X)){
           dim.proj <- 0
         }else{
 
           if (ncol(X) == 2) {
-            dim.proj <- sample(c(0,1),1)#2- length(vars)#2
+            dim.proj <- sample(c(0,1),1)
           } else {
             dim.proj <- sample(0:(ncol(X)-length(vars)), size = 1, replace = FALSE)
           }
@@ -213,7 +208,6 @@ densityRatioScore <- function(X, # full data with missing values
 
         }
         vars <- sort(vars, decreasing=F)
-        #print(vars)
 
       } else {
 
@@ -243,15 +237,12 @@ densityRatioScore <- function(X, # full data with missing values
 
 
     # 2) complete case selection + adversarial sample construction
-    X.proj.complete <- na.omit(X[,vars,drop=F])
+    X.proj.complete <- stats::na.omit(X[,vars,drop=F])
 
 
-
-    #Y.proj <- Y[,vars]
     X.proj.complete <- as.matrix(X.proj.complete)
     colnames(X.proj.complete) <- NULL
 
-    #if (nrow(X.proj.complete) >= 0.05 * nrow(X)) {
     list.ids.NA[[length(list.ids.NA)+1]] <- which(apply(X[,vars,drop=F], 1, function(x) any(is.na(x))))
 
 
@@ -307,7 +298,7 @@ densityRatioScore <- function(X, # full data with missing values
 
     # storing proj
     list.vars[[length(list.vars)+1]] <- vars
-    list.trueindices[[length(list.trueindices)+1]] <- which(complete.cases(X[,vars]))
+    list.trueindices[[length(list.trueindices)+1]] <- which(stats::complete.cases(X[,vars]))
     # fitting single tree
 
     colnames(X.proj.complete) <- NULL
@@ -330,7 +321,7 @@ densityRatioScore <- function(X, # full data with missing values
 
 
     if (compute.glm) {
-      gl <- tryCatch({obj <- glm(formula = class~., data = d,family = "binomial")
+      gl <- tryCatch({obj <- stats::glm(formula = class~., data = d,family = "binomial")
       obj},
       error = function(e) NA)
     }

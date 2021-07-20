@@ -46,4 +46,4 @@ Iscores(imputations = imputations, methods = methods, X.NA = X.NA)
 
 ## Issues
 
-To report an issue, please use the [issue tracker](http://github.com/missValTeam/Iscores/issues) on github.com.
+To report an issue, please use the [issue tracker](https://github.com/missValTeam/Iscores/issues) on github.com.

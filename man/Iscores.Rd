@@ -2,7 +2,7 @@
 % Please edit documentation in R/Iscores.R
 \name{Iscores}
 \alias{Iscores}
-\title{Iscores: compute the imputation KL-based scores}
+\title{Iscores: compute the imputation KL-based scoring rules}
 \usage{
 Iscores(
   imputations,
@@ -45,13 +45,13 @@ Iscores(
 The scores for each imputation method.
 }
 \description{
-Iscores: compute the imputation KL-based scores
+Iscores: compute the imputation KL-based scoring rules
 }
 \examples{
 n <- 100
 X <- cbind(rnorm(n),rnorm(n))
 X.NA <- X
-X.NA[,1] <- ifelse(runif(n)<=0.2, NA, X[,1])
+X.NA[,1] <- ifelse(stats::runif(n)<=0.2, NA, X[,1])
 
 imputations <- list()
 
@@ -63,12 +63,14 @@ imputations[[1]] <- lapply(1:5, function(i) {
 
 imputations[[2]] <- lapply(1:5, function(i) {
  X.loc <- X.NA
- X.loc[is.na(X.NA[,1]),1] <- sample(X.NA[!is.na(X.NA[,1]),1], size = sum(is.na(X.NA[,1])), replace = TRUE)
+ X.loc[is.na(X.NA[,1]),1] <- sample(X.NA[!is.na(X.NA[,1]),1],
+ size = sum(is.na(X.NA[,1])), replace = TRUE)
  return(X.loc)
 })
 
 methods <- c("mean","sample")
 
-Iscores(imputations = imputations, methods = methods, X.NA = X.NA, num.proj = 10, num.trees.per.proj = 2)
+Iscores(imputations = imputations, methods = methods, X.NA = X.NA,
+num.proj = 10, num.trees.per.proj = 2)
 
 }

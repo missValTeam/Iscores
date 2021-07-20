@@ -1,4 +1,4 @@
-#' Iscores: compute the imputation KL-based scores
+#' Iscores: compute the imputation KL-based scoring rules
 #'
 #' @param imputations a list of list of imputations matrices containing no missing values of the same size as X.NA
 #' @param methods a vector of characters indicating which methods are considered for imputations. It should have the same length as the list imputations.
@@ -11,12 +11,14 @@
 #' @param frac.test a numeric between 0 and 1, the fraction of test points.
 #' @param n.cores an integer, the number of cores to use.
 #' @param ... additional parameters.
+#' @import ranger
+#' @import parallel
 #'
 #' @examples
 #' n <- 100
 #' X <- cbind(rnorm(n),rnorm(n))
 #' X.NA <- X
-#' X.NA[,1] <- ifelse(runif(n)<=0.2, NA, X[,1])
+#' X.NA[,1] <- ifelse(stats::runif(n)<=0.2, NA, X[,1])
 #'
 #' imputations <- list()
 #'
@@ -28,14 +30,15 @@
 #'
 #' imputations[[2]] <- lapply(1:5, function(i) {
 #'  X.loc <- X.NA
-#'  X.loc[is.na(X.NA[,1]),1] <- sample(X.NA[!is.na(X.NA[,1]),1], size = sum(is.na(X.NA[,1])), replace = TRUE)
+#'  X.loc[is.na(X.NA[,1]),1] <- sample(X.NA[!is.na(X.NA[,1]),1],
+#'  size = sum(is.na(X.NA[,1])), replace = TRUE)
 #'  return(X.loc)
 #' })
 #'
 #' methods <- c("mean","sample")
 #'
-#' Iscores(imputations = imputations, methods = methods, X.NA = X.NA, num.proj = 10, num.trees.per.proj = 2)
-
+#' Iscores(imputations = imputations, methods = methods, X.NA = X.NA,
+#' num.proj = 10, num.trees.per.proj = 2)
 #'
 #' @return The scores for each imputation method.
 #'
@@ -66,7 +69,7 @@ Iscores <-function(imputations,
 
   ## original data
   # candidate missing value points
-  ind.candidates <- which(!complete.cases(X.NA))
+  ind.candidates <- which(!stats::complete.cases(X.NA))
   ind.candidates <- sort(ind.candidates)
   nrofmissing <- sum(is.na(X.NA))
 
@@ -100,7 +103,6 @@ Iscores <-function(imputations,
     scores.all <- list()
 
     # switch cases
-    ## Continue here with checking!!
     for (part in 1:2) {
 
       # apply on the unique patterns
@@ -130,15 +132,13 @@ Iscores <-function(imputations,
         scores <- lapply(1:m, function(set){
 
 
-          X.h <-imputations[[method]][[set]] #imputations[[method]][[sample((1:m)[-set],1)]]
+          X.h <-imputations[[method]][[set]]
           X.h <- as.matrix(X.h)[ids.pattern.train,,drop=F]
-          #set.seed(1)
-          # Delete Comment: This is the only place where we would get
-          # different results from the old code
+
           object.dr <- densityRatioScore(X = X.NA[ids.pattern.train,,drop=F],
                                          Xhat = X.h,
                                          x =  NA.pat.unique[j,],
-                                         X.true = X[ids.pattern.train,,drop=F],
+                                         X.true = NULL,#X[ids.pattern.train,,drop=F],
                                          compute.glm = TRUE,
                                          num.proj=num.proj,
                                          num.trees.per.proj = num.trees.per.proj,

@@ -1,13 +1,15 @@
 Package: Iscores
 Type: Package
-Title: Scoring imputations methods in the context of missing values
-Version: 0.1.0
+Title: Proper Scoring Rules for Missing Value Imputation
+Version: 1.0.0
 Author: Loris Michel, Meta-Lina Spohn, Jeffrey Naef
 Maintainer: Loris Michel <michel@stat.math.ethz.ch>
-Description: This package implements a KL-based scoring to assess the performance of missing value imputations.
+Description: Implementations of a KL-based scoring rule to assess the quality ofdifferent  missing value imputations in the broad sense.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
 Depends:
-  parallel
+  parallel,
+  stats,
+  ranger
