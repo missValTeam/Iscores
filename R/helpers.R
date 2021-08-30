@@ -1,6 +1,7 @@
 #' Combining projection forests
 #' @param mod1 first forest
 #' @param mod2 second forest
+#' @return a new forest combining the first and the second forest
 #' @import stats
 combine2Forests <- function(mod1, mod2) {
 
@@ -36,6 +37,7 @@ combine2Forests <- function(mod1, mod2) {
 #' Combining a list of forest
 #'
 #' @param list.rf a list of forests
+#' @return a forest combination of the forests stored in list.rf
 combineForests <- function(list.rf) {
   Reduce(list.rf, f = combine2Forests)
 }
@@ -47,6 +49,7 @@ combineForests <- function(list.rf) {
 #' @param return.regions should the individual indicators be returned?
 #' @param alpha the level
 #' @param combined the option to have the forests combined or not
+#' @return a list of the predictions from a crf object.
 predict.crf <- function(object, Z, cutoff = NULL, return.regions = FALSE, alpha=0.05, combined = FALSE) {
 
 
@@ -126,7 +129,8 @@ predict.crf <- function(object, Z, cutoff = NULL, return.regions = FALSE, alpha=
 #' @param min.node.size the minimum number of nodes in a tree.
 #' @param multiclass a boolean
 #' @param compute.glm a boolean
-#' @param ... additional parameters
+#' @param ... additional parameters#'
+#' @return a crf object
 densityRatioScore <- function(X, # full data with missing values
                               Xhat, # imputation
                               x = NULL, # pattern to input
@@ -428,6 +432,7 @@ densityRatioScore <- function(X, # full data with missing values
 #' @param Z a matrix of candidate points
 #' @param multiclass a boolean
 #' @param type a character
+#' @return a numeric value, the score.s
 compute_drScore <- function(object, Z = Z, multiclass = FALSE, type = "simple"){
 
   if (multiclass & object$num.trees.per.proj > 1) {
@@ -488,6 +493,7 @@ compute_drScore <- function(object, Z = Z, multiclass = FALSE, type = "simple"){
 
 #' Truncation of probability
 #' @param p a numeric value between 0 and 1 to be truncated
+#' @return a numeric value, the truncated probability.
 truncProb <- function(p) {
   return(pmin(pmax(p, 10^{-9}), 1-10^{-9}))
 }

@@ -4,7 +4,7 @@ Title: Proper Scoring Rules for Missing Value Imputation
 Version: 1.0.0
 Author: Loris Michel, Meta-Lina Spohn, Jeffrey Naef
 Maintainer: Loris Michel <michel@stat.math.ethz.ch>
-Description: Implementation of a KL-based scoring rule to assess the quality ofdifferent  missing value imputations in the broad sense.
+Description: Implementation of a KL-based scoring rule to assess the quality of different missing value imputations in the broad sense as introduced in Michel et al. (2021)  <arXiv:2106.0374>.
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

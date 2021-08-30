@@ -15,6 +15,9 @@ compute_drScore(object, Z = Z, multiclass = FALSE, type = "simple")
 
 \item{type}{a character}
 }
+\value{
+a numeric value, the score.s
+}
 \description{
 compute the density ratio score
 }

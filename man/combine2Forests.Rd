@@ -11,6 +11,9 @@ combine2Forests(mod1, mod2)
 
 \item{mod2}{second forest}
 }
+\value{
+a new forest combining the first and the second forest
+}
 \description{
 Combining projection forests
 }

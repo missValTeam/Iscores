@@ -9,6 +9,9 @@ combineForests(list.rf)
 \arguments{
 \item{list.rf}{a list of forests}
 }
+\value{
+a forest combination of the forests stored in list.rf
+}
 \description{
 Combining a list of forest
 }

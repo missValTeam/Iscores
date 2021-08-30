@@ -42,7 +42,7 @@ Iscores(
 \item{...}{additional parameters.}
 }
 \value{
-The scores for each imputation method.
+a vector made of the scores for each imputation method.
 }
 \description{
 Iscores: compute the imputation KL-based scoring rules

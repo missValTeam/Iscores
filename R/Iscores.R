@@ -40,7 +40,7 @@
 #' Iscores(imputations = imputations, methods = methods, X.NA = X.NA,
 #' num.proj = 10, num.trees.per.proj = 2)
 #'
-#' @return The scores for each imputation method.
+#' @return a vector made of the scores for each imputation method.
 #'
 #' @export
 Iscores <-function(imputations,

@@ -26,6 +26,9 @@
 
 \item{combined}{the option to have the forests combined or not}
 }
+\value{
+a list of the predictions from a crf object.
+}
 \description{
 Prediction for crf
 }

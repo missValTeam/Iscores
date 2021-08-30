@@ -39,7 +39,10 @@ densityRatioScore(
 
 \item{compute.glm}{a boolean}
 
-\item{...}{additional parameters}
+\item{...}{additional parameters#'}
+}
+\value{
+a crf object
 }
 \description{
 Computation of the density ratio score
