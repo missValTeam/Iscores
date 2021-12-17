@@ -8,41 +8,33 @@ densityRatioScore(
   X,
   Xhat,
   x = NULL,
-  X.true = NULL,
   num.proj = 10,
   num.trees.per.proj = 1,
   projection.function = NULL,
   min.node.size = 1,
-  multiclass = FALSE,
-  compute.glm = FALSE,
-  ...
+  normal.proj = T
 )
 }
 \arguments{
-\item{X}{a matrix of the observed data containing missing values}
+\item{X}{a matrix of the observed data containing missing values.}
 
-\item{Xhat}{a  matrix of imputations having same size as X}
+\item{Xhat}{a  matrix of imputations having same size as X.}
 
-\item{x}{pattern of missing values}
+\item{x}{pattern of missing values.}
 
-\item{X.true}{the actual true data if available}
-
-\item{num.proj}{an integer specifying the number of projections to consider for the score.}
+\item{num.proj}{an integer specifying the number of projections.}
 
 \item{num.trees.per.proj}{an integer, the number of trees per projection.}
 
-\item{projection.function}{a function providing the possible projections}
+\item{projection.function}{a function providing the user-specific projections.}
 
-\item{min.node.size}{the minimum number of nodes in a tree.}
+\item{min.node.size}{the minimum number of observations in a leaf of a tree.}
 
-\item{multiclass}{a boolean}
-
-\item{compute.glm}{a boolean}
-
-\item{...}{additional parameters#'}
+\item{normal.proj, }{a boolean, if TRUE, sample from the NA of the pattern and
+additionally from the non NA. If FALSE, sample only from the NA of the pattern.}
 }
 \value{
-a crf object
+a fitted random forest based on random projections
 }
 \description{
 Computation of the density ratio score

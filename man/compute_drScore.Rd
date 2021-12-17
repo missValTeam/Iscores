@@ -4,19 +4,19 @@
 \alias{compute_drScore}
 \title{compute the density ratio score}
 \usage{
-compute_drScore(object, Z = Z, multiclass = FALSE, type = "simple")
+compute_drScore(object, Z = Z, num.trees.per.proj, num.proj)
 }
 \arguments{
-\item{object}{a crf object}
+\item{object}{a crf object.}
 
-\item{Z}{a matrix of candidate points}
+\item{Z}{a matrix of candidate points.}
 
-\item{multiclass}{a boolean}
+\item{num.trees.per.proj}{an integer, the number of trees per projection.}
 
-\item{type}{a character}
+\item{num.proj}{an integer specifying the number of projections.}
 }
 \value{
-a numeric value, the score.s
+a numeric value, the DR I-Score.
 }
 \description{
 compute the density ratio score
