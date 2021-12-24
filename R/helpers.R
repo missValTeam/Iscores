@@ -2,7 +2,6 @@
 #' @param mod1 first forest
 #' @param mod2 second forest
 #' @return a new forest combining the first and the second forest
-#' @import stats
 combine2Forests <- function(mod1, mod2) {
 
   res <- mod1
@@ -84,7 +83,7 @@ densityRatioScore <- function(X, # full data with missing values
 
 
     dim.proj <- length(vars)
-    X.proj.complete <- na.omit(X[,vars,drop=F])
+    X.proj.complete <- stats::na.omit(X[,vars,drop=F])
     X.proj.complete <- matrix(X.proj.complete,ncol=length(vars), nrow=nrow(X.proj.complete), byrow = F)
     colnames(X.proj.complete) <- NULL
 
