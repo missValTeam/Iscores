@@ -464,11 +464,11 @@ doevaluation <-function(imputations,
 
         if(j!=nrow(NA.pat.unique)){
           # in case only one point is there we do not separate
-          if (length(NA.pat.groups[[j]])==1) {
-            ids.pattern.test <- NA.pat.groups[[j]]
-            ids.pattern.train <- 1:nrow(X.NA)
+          #if (length(NA.pat.groups[[j]])==1) {
+          #  ids.pattern.test <- NA.pat.groups[[j]]
+          #  ids.pattern.train <- 1:nrow(X.NA)
             ### We actually include everything in this case
-          } else {
+          #} else {
             if (part == 1) {
               ids.pattern.test <- NA.pat.groups[[j]][1:(floor(length(NA.pat.groups[[j]])*0.5))]
 
@@ -478,7 +478,7 @@ doevaluation <-function(imputations,
 
             ids.pattern.train <- setdiff(1:nrow(X.NA), ids.pattern.test)
 
-          }
+          #}
         }else{
 
           if (average.diff==T){
